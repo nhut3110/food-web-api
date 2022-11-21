@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\APIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/get-products', [APIController::class, 'index']);
+Route::get('/get-products/{id}', [APIController::class, 'show']);
+Route::post('/create-product', [APIController::class, 'store']);
