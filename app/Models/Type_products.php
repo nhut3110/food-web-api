@@ -9,4 +9,5 @@ class Type_products extends Model
 {
     use HasFactory;
     protected $table = 'food_type';
+    protected $fillable = ['name',  'created_at', 'updated_at'];
 }

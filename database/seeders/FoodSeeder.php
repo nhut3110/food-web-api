@@ -28,6 +28,7 @@ class FoodSeeder extends Seeder
             'promotion_price' => $faker->numberBetween($min = 1000, $max = 100000),
             'description' => $faker->realText($maxNbChars = 200, $indexSize = 2),
             'type_id' => $faker->numberBetween($min = 1, $max = 3),
+            'created_at'=>$faker->iso8601($max = 'now')
            ]);
         }
     }

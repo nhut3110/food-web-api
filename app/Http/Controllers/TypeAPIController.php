@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Products;
-use App\Http\Resources\Product as ProductResource;
-use Illuminate\Support\Facades\Validator;
+use App\Models\Type_products;
+use App\Http\Resources\TypeResource as TypeResource;
 
-class APIController extends Controller
+class TypeAPIController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +15,8 @@ class APIController extends Controller
      */
     public function index()
     {
-        $products = Products::all();
-        return response()->json($products);
+        $types = Type_products::all();
+        return response()->json($types);
     }
 
     /**
@@ -41,11 +40,6 @@ class APIController extends Controller
         $input = $request->all();
         $validator = Validator::make($input, [
             'name' => 'required|string',
-            'image' => 'required|string',
-            'unit_price' => 'required|string',
-            'promotion_price' => 'nullable',
-            'description' => 'nullable',
-            'type_id' => 'required|numeric',
         ]);
         if($validator->fails()){
             $arr = [
@@ -57,8 +51,8 @@ class APIController extends Controller
         }
         $product = Products::create($input);
         $arr = ['status' => true,
-            'message'=>"Sản phẩm đã lưu thành công",
-            'data'=> new ProductResource($product)
+            'message'=>"Danh mục đã lưu thành công",
+            'data'=> new TypeResource($product)
         ];
         return response()->json($arr, 201);
     }
@@ -71,20 +65,8 @@ class APIController extends Controller
      */
     public function show($id)
     {
-        $product = Products::where('id',$id)->first();
-        return response()->json($product);
-    }
-
-       /**
-     * Display the specified resource by type id.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function showByType($id)
-    {
-        $product = Products::where('type_id',$id)->get();
-        return response()->json($product);
+        $types = Type_products::where('id',$id)->first();
+        return response()->json($types);
     }
 
     /**
@@ -105,7 +87,7 @@ class APIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Products $product)
+    public function update(Request $request, Type_products $type)
     {
         $input = $request->all();
         $validator = Validator::make($input, [
@@ -124,17 +106,12 @@ class APIController extends Controller
             ];
             return response()->json($arr, 200);
         }
-        $product->name = $input['name'];
-        $product->image = $input['image'];
-        $product->unit_price = $input['unit_price'];
-        $product->promotion_price = $input['promotion_price'];
-        $product->description = $input['description'];
-        $product->type_id = $input['type_id'];
-        $product->save();
+        $type->name = $input['name'];
+        $type->save();
         $arr = [
             'status' => true,
-            'message' => 'Sản phẩm cập nhật thành công',
-            'data' => new ProductResource($product)
+            'message' => 'Danh mục cập nhật thành công',
+            'data' => new TypeResource($type)
         ];
         return response()->json($arr, 200);
     }
@@ -145,12 +122,12 @@ class APIController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Products $product)
+    public function destroy(Type_products $type)
     {
-        $product->delete();
+        $type->delete();
         $arr = [
             'status' => true,
-            'message' =>'Sản phẩm đã được xóa',
+            'message' =>'Danh mục đã được xóa',
             'data' => [],
         ];
         return response()->json($arr, 200);
